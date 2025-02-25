@@ -33,6 +33,7 @@ Route::group(['auth, verified'], function () {
     // Route::delete('/users/{user}', [UserCreateController::class, 'destroy'])->name('users.destroy');
 
     // client
+    Route::get('/clients', [RegisteredUserController::class, 'index')->name('users.index');
     Route::get('/clients', [ClientController::class, 'index'])->name('clients.index');
 });
 
