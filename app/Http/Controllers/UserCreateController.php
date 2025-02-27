@@ -15,6 +15,13 @@ use Spatie\Permission\Traits\HasRoles;
 class UserCreateController extends Controller
 {
     use HasRoles;
+    // display all uusers to see in the user
+    public function index()
+    {
+        $users = User::paginate(10);
+        return view('user.index', compact('users'));
+    }
+
     public function create()
     {
         return view('user.create');
@@ -22,17 +29,16 @@ class UserCreateController extends Controller
 
     public function store(Request $request, User $user)
     {
-        $role = Role::create(['name' => 'admin']);
-        $user = User::create([
-            'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
-        $user->assignRole($role);
-        event(new Registered($user));
-        Auth::login($user);
-        return redirect(route('users.index'))->with('success', 'User created successfully');
+        if (Auth::user()->hasRole('admin')) {
+            $request->validate([
+                'first_name' => 'required',
+                'last_name' => 'required',
+                'email' => 'required|email|unique:users',
+                'password' => 'required',
+            ]);
+            User::create(request()->all());
+            return redirect()->route('users.index')->with('success', 'User created successfully');
+        }
     }
 
 
