@@ -28,6 +28,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 
 
+<<<<<<< HEAD
+=======
+    // client
+    Route::get('/clients', [RegisteredUserController::class, 'index')->name('users.index');
+    Route::get('/clients', [ClientController::class, 'index'])->name('clients.index');
+});
+>>>>>>> 3f89e1c5e659fb0ffb560c5ace29a1be98ac2ae4
 
 
 // Admin Routes
