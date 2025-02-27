@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
+            $table->string('title');
+            $table->text('description');
+            $table->foreignId('user_id')->constrained();
+            $table->foreignId('client_id')->constrained();
+            $table->date('deadline');
+            $table->enum('status', ['open', 'in progress', 'blocked', 'cancelled', 'completed'])->default('open');
             $table->timestamps();
         });
     }
